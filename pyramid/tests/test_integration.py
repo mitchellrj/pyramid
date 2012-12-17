@@ -317,9 +317,24 @@ class TestHybridApp(IntegrationBase, unittest.TestCase):
 class TestRestBugApp(IntegrationBase, unittest.TestCase):
     # test bug reported by delijati 2010/2/3 (http://pastebin.com/d4cc15515)
     package = 'pyramid.tests.pkgs.restbugapp'
-    def test_it(self):
+    def test_get(self):
         res = self.testapp.get('/pet', status=200)
         self.assertEqual(res.body, b'gotten')
+
+    def test_post(self):
+        res = self.testapp.post('/pet', status=200)
+        self.assertEqual(res.body, b'posted')
+
+class TestRestBugAppNoRoute(IntegrationBase, unittest.TestCase):
+    # test bug reported by delijati 2010/2/3 (http://pastebin.com/d4cc15515)
+    package = 'pyramid.tests.pkgs.mixedcontextrestbugapp'
+    def test_get(self):
+        res = self.testapp.get('/', status=200)
+        self.assertEqual(res.body, b'gotten')
+
+    def test_post(self):
+        res = self.testapp.post('/', status=200)
+        self.assertEqual(res.body, b'posted')
 
 class TestForbiddenAppHasResult(IntegrationBase, unittest.TestCase):
     # test that forbidden exception has ACLDenied result attached
